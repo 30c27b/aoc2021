@@ -24,20 +24,29 @@ func main() {
 
 	lines := strings.Split(string(f), "\n")
 
-	var count int = 0
-	var last int = 0
+	var wins []int = make([]int, len(lines)-2)
 
-	first, err := strconv.Atoi(lines[0])
-	if err != nil {
-		log.Fatalln("Input parsing error", err)
-	}
-	last = first
+	for idx, l := range lines {
 
-	for _, l := range lines[1:] {
 		n, err := strconv.Atoi(l)
 		if err != nil {
 			log.Fatalln("Input parsing error", err)
 		}
+		if idx-2 >= 0 && idx-2 < len(wins) {
+			wins[idx-2] += n
+		}
+		if idx-1 >= 0 && idx-1 < len(wins) {
+			wins[idx-1] += n
+		}
+		if idx >= 0 && idx < len(wins) {
+			wins[idx] += n
+		}
+	}
+
+	var count int = 0
+	var last int = wins[0]
+
+	for _, n := range wins[1:] {
 		if n > last {
 			count++
 		}
