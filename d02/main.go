@@ -24,8 +24,9 @@ func main() {
 
 	lines := strings.Split(string(f), "\n")
 
-	var height int = 0
+	var depth int = 0
 	var dist int = 0
+	var aim int = 0
 
 	for _, line := range lines {
 
@@ -36,12 +37,13 @@ func main() {
 		}
 		switch w[0] {
 		case "up":
-			height -= n
+			aim -= n
 		case "down":
-			height += n
+			aim += n
 		case "forward":
 			dist += n
+			depth += n * aim
 		}
 	}
-	fmt.Printf("%v\n", height*dist)
+	fmt.Printf("%v\n", depth*dist)
 }
