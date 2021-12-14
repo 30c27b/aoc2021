@@ -17,19 +17,24 @@ def parse_input(path: str = "input.x=txt") -> tuple[list[tuple[int, int]], list[
     return points, folds
 
 
-def apply_fold(points: list[tuple[int, int]], fold: tuple[bool, int]):
+def apply_fold(points: list[tuple[int, int]], fold: tuple[bool, int]) -> list[tuple[int, int]]:
     axis, n = fold
-    # for x, y in points:
-    #     new: tuple[int, int] = None
-    #     if axis and x > n:
-    #         new = (n-(x-n), y)
-    #     elif not axis and y >= n:
-    #         new = (n-(x-n), y)
-    #     if new != None and new not in points:
-    #         points.append(new)
 
-    points = [point for point in points if point[0] == 1]
+    new_points: list[tuple[int, int]] = list()
 
+    for x, y in points:
+        if not axis:
+            if y < n:
+                new_points.append((x, y))
+            else:
+                new_points.append((x, n-(y-n)))
+        else:
+            if x < n:
+                new_points.append((x, y))
+            else:
+                new_points.append((n-(x-n), y))
+
+    return new_points
 
 def display_points(points: list[tuple[int, int]], fold: tuple[bool, int] = None):
     mx = max(points, key=lambda t: t[0])[0]
@@ -41,13 +46,13 @@ def display_points(points: list[tuple[int, int]], fold: tuple[bool, int] = None)
             elif fold and fold[0] and fold[1] == x:
                 print("|", end="")
             else:
-                print("#" if (x, y) in points else ".", end="")
+                print("#" if (x, y) in points else " ", end="")
         print()
 
 
 if __name__ == "__main__":
-    points, folds = parse_input("example_input.txt")
+    points, folds = parse_input("input.txt")
+    for fold in folds:
+        points = apply_fold(points, fold)
     display_points(points, folds[0])
-    print("+++++++++++++++++")
-    apply_fold(points, folds[0])
-    display_points(points, folds[0])
+
