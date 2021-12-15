@@ -1,4 +1,3 @@
-from os import TMP_MAX
 from typing import Counter
 
 
@@ -25,12 +24,9 @@ def apply_step(template: str, insertions: dict[str, str]) -> str:
     return new_template
 
 
-
 if __name__ == "__main__":
     template, insertions = parse_input("input.txt")
-    for i in range(10):
+    for i in range(40):
         template = apply_step(template, insertions)
-        print(i)
     count = Counter(template)
     print(count.most_common(1)[0][1] - count.most_common()[-1][1])
-
